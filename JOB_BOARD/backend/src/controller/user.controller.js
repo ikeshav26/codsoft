@@ -79,7 +79,8 @@ export const Logout=async(req,res)=>{
 
 export const userData=async(req,res)=>{
     try{
-        const user=req.user;
+        console.log(req.user)
+        const user=req.user.id;
         if(!user){
             return res.status(401).json({message: 'Unauthorized'});
         }
