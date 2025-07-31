@@ -1,16 +1,22 @@
 import express from "express"
 import dotenv from 'dotenv';
 import connectDB from "./src/config/connectDb.js";
+import userRoutes from './src/routes/user.routes.js'
 dotenv.config();
 
 const app = express();
 connectDB();
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 
 
 app.get('/', (req, res) => {
     res.send('Welcome to the Job Board API');
 });
 
+app.use('/api/users',userRoutes)
 
 
 
