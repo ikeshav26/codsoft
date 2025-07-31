@@ -1,5 +1,5 @@
 import express from 'express';
-import { acceptApplication, applyForJob, createJob, deleteJob, getAllJobs, getEmployerCreatedJobs, getJobById, rejectApplication, userApplications } from '../controller/job.controller.js';
+import { acceptApplication, ApplicationsOnEmployerJob, applyForJob, createJob, deleteJob, getAllJobs, getEmployerCreatedJobs, getJobById, rejectApplication, userApplications } from '../controller/job.controller.js';
 import  userAuth  from '../middlewares/userAuth.js';
 
 const router=express.Router();
@@ -14,5 +14,6 @@ router.post('/apply-job/:id',userAuth,applyForJob)
 router.get('/my-applications',userAuth,userApplications)
 router.get('/accept-application/:id',userAuth,acceptApplication)
 router.get('/reject-application/:id',userAuth,rejectApplication)
+router.get('/application/:id',userAuth,ApplicationsOnEmployerJob)
 
 export default router;

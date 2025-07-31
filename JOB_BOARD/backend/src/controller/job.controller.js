@@ -229,3 +229,22 @@ export const userApplications=async(req,res)=>{
     console.error(err);
   }
 }
+
+export const ApplicationsOnEmployerJob=async(req,res)=>{
+  try{
+    const role=req.user.role;
+    if(role!=='employer'){
+      return res.status(403).json({message: 'Access denied. Only employers can view applications.'});
+    }
+
+    const jobId=req.params.id;
+    const applications = await Application.find({ jobId }).populate('userId', 'username email').populate('jobId', 'title company location salary deadline');
+    if(applications.length === 0){
+      return res.status(404).json({ message: 'No applications found for this job.' });
+    }
+    res.status(200).json({ message: 'Applications fetched successfully', applications });
+  }catch(err){
+    res.status(500).json({ message: 'Error fetching applications', error: err.message });
+    console.error(err);
+  }
+}
