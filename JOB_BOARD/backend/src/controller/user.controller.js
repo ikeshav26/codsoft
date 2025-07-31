@@ -1,6 +1,10 @@
 import bcrypt from 'bcryptjs';
 import User from '../models/user.model.js';
 import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+dotenv.config();
+
+
 
 export const signup=async(req,res)=>{
     try{
@@ -24,7 +28,11 @@ export const signup=async(req,res)=>{
         })
 
         await newUser.save();
-        res.status(201).json({message: 'User created successfully', user: newUser});
+
+        const token=jwt.sign({id:newUser._id,role:newUser.role},process.env.JWT_SECRET,{expiresIn:'7d'});
+        res.cookie('token', token, {httpOnly: true, secure: true, sameSite: 'None', maxAge: 7 * 24 * 60 * 60 * 1000}); 
+
+        res.status(201).json({message: 'User created successfully', user: newUser, token});
     }catch(err){
         console.error(err);
         res.status(500).json({message: 'Internal server error'});
@@ -49,7 +57,38 @@ export const login=async(req,res)=>{
             return res.status(400).json({message: 'Invalid email or password'});
         }
 
-        res.status(200).json({message: 'Login successful', user});
+        const token=jwt.sign({id:user._id,role:user.role},process.env.JWT_SECRET,{expiresIn:'7d'});
+        res.cookie('token', token, {httpOnly: true, secure: true, sameSite: 'None', maxAge: 7 * 24 * 60 * 60 * 1000}); 
+
+        res.status(200).json({message: 'Login successful', user, token});
+    }catch(err){
+        console.error(err);
+        res.status(500).json({message: 'Internal server error'});
+    }
+}
+
+export const Logout=async(req,res)=>{
+    try{
+        res.clearCookie('token', {httpOnly: true, secure: true, sameSite: 'None'});
+        res.status(200).json({message: 'Logout successful'});
+    }catch(err){
+        console.error(err);
+        res.status(500).json({message: 'Internal server error'});
+    }
+}
+
+export const userData=async(req,res)=>{
+    try{
+        const user=req.user;
+        if(!user){
+            return res.status(401).json({message: 'Unauthorized'});
+        }
+
+        const userData=await User.findById(user).select('-password');
+        if(!userData){
+            return res.status(404).json({message: 'User not found'});
+        }
+        res.status(200).json({user: userData});
     }catch(err){
         console.error(err);
         res.status(500).json({message: 'Internal server error'});
