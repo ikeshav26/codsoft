@@ -120,7 +120,6 @@ export const getJobById = async (req, res) => {
   }
 };
 
-
 export const applyForJob=async(req,res)=>{
     try{
         const jobId=req.params.id;

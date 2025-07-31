@@ -2,6 +2,10 @@ import bcrypt from 'bcryptjs';
 import User from '../models/user.model.js';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import OTP from '../models/otp.model.js';
+import nodemailer from 'nodemailer';
+
+
 dotenv.config();
 
 
@@ -96,3 +100,80 @@ export const userData=async(req,res)=>{
     }
 }
 
+export const sendOtp=async(req,res)=>{
+    try{
+        const {email}=req.body;
+        if(!email){
+            return res.status(400).json({message: 'Email is required'});
+        }
+
+        const user=await User.findOne({ email });
+        if(!user){
+            return res.status(404).json({message: 'User not found'});
+        }
+
+        const otp=Math.floor(100000 + Math.random() * 900000).toString();
+
+        const generatedOtp=await OTP.create({
+            email,
+            otp
+        })
+        await generatedOtp.save();
+
+        const auth=nodemailer.createTransport({
+            service: 'gmail',
+            secure: true,
+            port: 465,
+            auth: {
+                user: process.env.EMAIL,
+                pass: process.env.EMAIL_PASSWORD
+            }
+        });
+
+        const receiver={
+            from: process.env.EMAIL,
+            to: email,
+            subject: 'Password Reset',
+            text:"Your password reset otp :"+otp
+        }
+
+        await auth.sendMail(receiver, (error, info) => {
+            if (error) {
+                return res.status(500).json({ message: 'Error sending email', error });
+            }
+            console.log('Email sent: ' + info.response);
+        });
+        res.status(200).json({message: 'OTP sent successfully', otp});
+    }catch(err){
+        console.error(err);
+        res.status(500).json({message: 'Internal server error'});
+    }
+}
+
+export const verifyOtp=async(req,res)=>{
+    try{
+        const {oldEmail,newPassword,otp}=req.body;
+        if(!oldEmail || !newPassword || !otp){
+            return res.status(400).json({message: 'All fields are required'});
+        }
+
+        const user=await User.findOne({ email: oldEmail });
+        if(!user){
+            return res.status(404).json({message: 'User not found'});
+        }
+        const otpRecord=await OTP.findOne({ email: oldEmail, otp });
+        if(!otpRecord){
+            return res.status(400).json({message: 'Invalid OTP'});
+        }
+        const hashedPassword=await bcrypt.hash(newPassword,10);
+
+        user.password=hashedPassword;
+        await user.save();
+        await OTP.deleteOne({ email: oldEmail, otp });
+
+        res.status(200).json({message: 'Password updated successfully'});
+    }catch(err){
+        console.error(err);
+        res.status(500).json({message: 'Internal server error'});
+    }
+}
