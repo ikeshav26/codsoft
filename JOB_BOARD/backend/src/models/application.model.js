@@ -30,6 +30,11 @@ const applicationSchema = new mongoose.Schema({
   coverLetter: {
     type: String,
     required: true
+  },
+  status: {
+    type: String,
+    enum: ['applied', 'accepted', 'rejected'],
+    default: 'applied'
   }
 }, { timestamps: true });
 

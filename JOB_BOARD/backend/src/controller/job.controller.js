@@ -2,6 +2,7 @@ import cloudinary from "../config/cloudinary.js";
 import Application from "../models/application.model.js";
 import Job from "../models/job.model.js";
 
+
 export const createJob = async (req, res) => {
   try {
     const role = req.user.role;
@@ -162,4 +163,70 @@ export const applyForJob=async(req,res)=>{
         res.status(500).json({ message: 'Error applying for job', error: err.message });
         console.error(err);
     }
+}
+
+export const acceptApplication=async(req,res)=>{
+  try{
+    const role=req.user.role;
+    if(role!=='employer'){
+      return res.status(403).json({message: 'Access denied. Only employers can accept applications.'});
+    }
+
+    const applicationId=req.params.id;
+    const application=await Application.findById(applicationId);
+    if(!application){
+      return res.status(404).json({message: 'Application not found'});
+    }
+    if(application.status === 'accepted'){
+      return res.status(400).json({message: 'Application already accepted'});
+    }
+    application.status = 'accepted';
+    await application.save();
+
+    res.status(200).json({message: 'Application accepted successfully', application});
+  }catch(err){
+    res.status(500).json({ message: 'Error accepting application', error: err.message });
+    console.error(err);
+  }
+};
+
+
+export const rejectApplication=async(req,res)=>{
+  try{
+    const role=req.user.role;
+    if(role!=='employer'){
+      return res.status(403).json({message: 'Access denied. Only employers can reject applications.'});
+    }
+
+    const applicationId=req.params.id;
+    const application=await Application.findById(applicationId);
+    if(!application){
+      return res.status(404).json({message: 'Application not found'});
+    }
+    if(application.status === 'rejected'){
+      return res.status(400).json({message: 'Application already rejected'});
+    }
+    application.status = 'rejected';
+    await application.save();
+
+    res.status(200).json({message: 'Application rejected successfully', application});
+  }catch(err){
+    res.status(500).json({ message: 'Error rejecting application', error: err.message });
+    console.error(err);
+  }
+}
+
+
+export const userApplications=async(req,res)=>{
+  try{
+    const userId=req.user.id;
+    const applications = await Application.find({ userId }).populate('jobId', 'title company location salary deadline').populate('userId', 'username email');
+    if(applications.length === 0){
+      return res.status(404).json({ message: 'No applications found for this user.' });
+    }
+    res.status(200).json({ message: 'Applications fetched successfully', applications });
+  }catch(err){
+    res.status(500).json({ message: 'Error fetching applications', error: err.message });
+    console.error(err);
+  }
 }
