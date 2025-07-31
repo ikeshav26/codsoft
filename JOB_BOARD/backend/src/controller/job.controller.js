@@ -1,3 +1,5 @@
+import cloudinary from "../config/cloudinary.js";
+import Application from "../models/application.model.js";
 import Job from "../models/job.model.js";
 
 export const createJob = async (req, res) => {
@@ -116,3 +118,48 @@ export const getJobById = async (req, res) => {
     console.error(err);
   }
 };
+
+
+export const applyForJob=async(req,res)=>{
+    try{
+        const jobId=req.params.id;
+        const userId=req.user.id;
+        const job=await Job.findById(jobId);
+        if(!job){
+            return res.status(404).json({message: 'Job not found'});
+        }
+
+        const {applicantName, applicantEmail, applicantPhone, resume, coverLetter} = req.body;
+        if(!applicantName || !applicantEmail || !applicantPhone || !resume || !coverLetter){
+            return res.status(400).json({message: 'All fields are required'});
+        }
+
+        const resumeResponse=await cloudinary.uploader.upload(resume, {
+            folder: 'job_applications',
+            public_id: `${applicantName}_resume`,
+            resource_type: 'raw'
+        });
+        
+        const coverLetterResponse=await cloudinary.uploader.upload(coverLetter, {
+            folder: 'job_applications',
+            public_id: `${applicantName}_cover_letter`,
+            resource_type: 'raw'
+        });
+
+        const newApplication = new Application({
+            jobId,
+            userId,
+            applicantName,
+            applicantEmail,
+            applicantPhone,
+            resume: resumeResponse.secure_url,
+            coverLetter: coverLetterResponse.secure_url
+        });
+
+        await newApplication.save();
+        res.status(201).json({ message: 'Application submitted successfully', application: newApplication });
+    } catch (err) {
+        res.status(500).json({ message: 'Error applying for job', error: err.message });
+        console.error(err);
+    }
+}
