@@ -14,6 +14,8 @@ import CreateJob from './pages/CreateJob'
 import ApplyJob from './pages/ApplyJob'
 import ExploreJobs from './pages/ExploreJobs'
 
+import { Toaster } from 'react-hot-toast'
+
 const App = () => {
   const {user,navigate,employer,location}=useContext(AppContext);
   return (
@@ -34,6 +36,7 @@ const App = () => {
         </Routes>
       </main>
       {location.pathname.includes('login') || location.pathname.includes('signup') ? null : <Footer/>}
+      <Toaster/>
     </div>
   )
 }
