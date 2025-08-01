@@ -4,9 +4,14 @@ import connectDB from "./src/config/connectDb.js";
 import userRoutes from './src/routes/user.routes.js'
 import jobRoutes from './src/routes/job.routes.js';
 import cookieParser from "cookie-parser";
+import cors from 'cors';
 dotenv.config();
 
 const app = express();
+app.use(cors({
+    origin: process.env.CLIENT_URL,
+    credentials: true,
+}));
 connectDB();
 
 app.use(express.json());

@@ -7,8 +7,9 @@ const AppContext=createContext();
 
 
 export const ContextProvider=({children})=>{
-    const [user, setuser] = useState(localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null);
+    const [user, setuser] = useState(localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : {name:"keshav"});
     const [employer, setemployer] = useState(localStorage.getItem('employer') ? JSON.parse(localStorage.getItem('employer')) : null);
+    const [token, settoken] = useState(localStorage.getItem('token') ? JSON.parse(localStorage.getItem('token')) : null);
     const [jobs, setjobs] = useState([])
     const navigate=useNavigate();
     const location=useLocation();

@@ -12,6 +12,7 @@ import Contact from './pages/Contact'
 import ResetPassword from './pages/ResetPassword'
 import CreateJob from './pages/CreateJob'
 import ApplyJob from './pages/ApplyJob'
+import ExploreJobs from './pages/ExploreJobs'
 
 const App = () => {
   const {user,navigate,employer,location}=useContext(AppContext);
@@ -28,6 +29,7 @@ const App = () => {
         <Route path="/reset-password" element={<ResetPassword/>}/>
         <Route path="/create-job" element={employer?<CreateJob/>:<Navigate to='/'/>}/>
         <Route path="/apply-job" element={user?<ApplyJob/>:<Navigate to='/'/>}/>
+        <Route path="/explore-jobs" element={<ExploreJobs/>}/>
       </Routes>
       {location.pathname.includes('login') || location.pathname.includes('signup') ? null : <Footer/>}
     </div>
