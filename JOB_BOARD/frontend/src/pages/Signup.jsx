@@ -10,7 +10,7 @@ const Signup = () => {
   const [password, setpassword] = useState('')
   const [role, setrole] = useState('')
 
-  const {user,employer,navigate}=useContext(AppContext)
+  const {user,employer,navigate,setuser,setemployer}=useContext(AppContext)
 
   const handleSubmit=async(e)=>{
     e.preventDefault();
@@ -23,12 +23,14 @@ const Signup = () => {
     console.log(formdata);
 
     try{
-      const res=await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/users/signup`, formdata);
+      const res=await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/users/signup`, formdata,{withCredentials:true});
       if(role=="user"){
         localStorage.setItem('user', JSON.stringify(res.data.user))
+        setuser(res.data.user)
       }
       if(role=="employer"){
         localStorage.setItem('employer', JSON.stringify(res.data.user))
+        setemployer(res.data.user)
       }
 
       localStorage.setItem('token', res.data.token)

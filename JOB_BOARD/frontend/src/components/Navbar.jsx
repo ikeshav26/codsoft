@@ -7,8 +7,11 @@ const Navbar = () => {
   const {user, employer, setuser, setemployer, navigate,token} = useContext(AppContext)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
-  const handleLogout = () => {
-    if (user) {
+  const handleLogout =async () => {
+  
+    try{
+      const res=await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/users/logout`,{withCredentials:true});
+      if (user) {
       localStorage.removeItem('user')
       setuser(null)
     }
@@ -16,8 +19,13 @@ const Navbar = () => {
       localStorage.removeItem('employer')
       setemployer(null)
     }
-    localStorage.removeItem('token')  
+    localStorage.removeItem('token') 
+    toast.success(res.data.message); 
     navigate('/')
+    }catch(error){
+      console.error("Error during logout:", error);
+      toast.error(error.response.data.message || "An error occurred during logout.");
+    }
   }
 
   const toggleMobileMenu = () => {
@@ -110,7 +118,7 @@ const Navbar = () => {
               ) : (
                 <div className="flex items-center space-x-4">
                   <span className="text-sm text-gray-600">
-                    Welcome, {user ? user.name : employer.name}
+                    Welcome, {user ? user.username : employer.username}
                     {employer && <span className="text-blue-600 ml-1">(Employer)</span>}
                   </span>
                   <button 
