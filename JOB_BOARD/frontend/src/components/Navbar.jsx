@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react'
 import AppContext from '../context/AppContext'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
+import { toast } from 'react-hot-toast'
 
 const Navbar = () => {
   const {user, employer, setuser, setemployer, navigate,token} = useContext(AppContext)

@@ -32,7 +32,7 @@ const App = () => {
           <Route path="/reset-password" element={<ResetPassword/>}/>
           <Route path="/create-job" element={employer?<CreateJob/>:<Navigate to='/'/>}/>
           <Route path="/apply-job" element={user?<ApplyJob/>:<Navigate to='/'/>}/>
-          <Route path="/explore-jobs" element={<ExploreJobs/>}/>
+          <Route path="/explore-jobs" element={user || employer?<ExploreJobs/>:<Navigate to='/'/>}/>
         </Routes>
       </main>
       {location.pathname.includes('login') || location.pathname.includes('signup') ? null : <Footer/>}
