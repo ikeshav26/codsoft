@@ -14,6 +14,6 @@ router.post('/apply-job/:id',userAuth,applyForJob)
 router.get('/my-applications',userAuth,userApplications)
 router.get('/accept-application/:id',userAuth,acceptApplication)
 router.get('/reject-application/:id',userAuth,rejectApplication)
-router.get('/application/:id',userAuth,ApplicationsOnEmployerJob)
+router.get('/applications/:id',userAuth,ApplicationsOnEmployerJob)
 
 export default router;
