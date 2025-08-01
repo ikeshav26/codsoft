@@ -17,20 +17,22 @@ import ExploreJobs from './pages/ExploreJobs'
 const App = () => {
   const {user,navigate,employer,location}=useContext(AppContext);
   return (
-    <div className='bg-red-400 text-3xl'>
+    <div className='min-h-screen'>
       {location.pathname.includes('login') || location.pathname.includes('signup') ? null : <Navbar/>}
-      <Routes>
-        <Route path="/" element={<Home/>}/>
-        <Route path="/login" element={<Login/>}/>
-        <Route path="/signup" element={<Signup/>}/>
-        <Route path="/employer-dashboard" element={employer?<EmployerDashboard/>:<Navigate to='/'/>}/>
-        <Route path="/user-dashboard" element={user?<UserDashboard/>:<Navigate to='/'/>}/>
-        <Route path="/contact" element={<Contact/>}/>
-        <Route path="/reset-password" element={<ResetPassword/>}/>
-        <Route path="/create-job" element={employer?<CreateJob/>:<Navigate to='/'/>}/>
-        <Route path="/apply-job" element={user?<ApplyJob/>:<Navigate to='/'/>}/>
-        <Route path="/explore-jobs" element={<ExploreJobs/>}/>
-      </Routes>
+      <main className={location.pathname.includes('login') || location.pathname.includes('signup') ? '' : 'pt-16'}>
+        <Routes>
+          <Route path="/" element={<Home/>}/>
+          <Route path="/login" element={<Login/>}/>
+          <Route path="/signup" element={<Signup/>}/>
+          <Route path="/employer-dashboard" element={employer?<EmployerDashboard/>:<Navigate to='/'/>}/>
+          <Route path="/user-dashboard" element={user?<UserDashboard/>:<Navigate to='/'/>}/>
+          <Route path="/contact" element={<Contact/>}/>
+          <Route path="/reset-password" element={<ResetPassword/>}/>
+          <Route path="/create-job" element={employer?<CreateJob/>:<Navigate to='/'/>}/>
+          <Route path="/apply-job" element={user?<ApplyJob/>:<Navigate to='/'/>}/>
+          <Route path="/explore-jobs" element={<ExploreJobs/>}/>
+        </Routes>
+      </main>
       {location.pathname.includes('login') || location.pathname.includes('signup') ? null : <Footer/>}
     </div>
   )
