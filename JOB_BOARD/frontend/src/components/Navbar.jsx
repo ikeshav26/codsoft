@@ -73,13 +73,6 @@ const Navbar = () => {
                   >
                     Dashboard
                   </Link>
-
-                  <Link 
-                to="/contact" 
-                className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
-              >
-                Contact
-              </Link>
                 </>
               )}
 
@@ -92,14 +85,15 @@ const Navbar = () => {
                 >
                   Dashboard
                 </Link>
-                <Link 
+                
+              </>
+              )}
+              <Link 
                 to="/contact" 
                 className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
               >
                 Contact
               </Link>
-              </>
-              )}
             </div>
           </div>
 
