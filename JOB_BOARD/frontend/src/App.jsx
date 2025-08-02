@@ -20,7 +20,7 @@ const App = () => {
   const {user,navigate,employer,location}=useContext(AppContext);
   return (
     <div className='min-h-screen'>
-      {location.pathname.includes('login') || location.pathname.includes('signup') ? null : <Navbar/>}
+      {location.pathname.includes('login') || location.pathname.includes('signup') || location.pathname.includes('reset-password') ? null : <Navbar/>}
       <main className={location.pathname.includes('login') || location.pathname.includes('signup') ? '' : 'pt-16'}>
         <Routes>
           <Route path="/" element={<Home/>}/>
@@ -35,7 +35,7 @@ const App = () => {
           <Route path="/explore-jobs" element={user || employer?<ExploreJobs/>:<Navigate to='/'/>}/>
         </Routes>
       </main>
-      {location.pathname.includes('login') || location.pathname.includes('signup') ? null : <Footer/>}
+      {location.pathname.includes('login') || location.pathname.includes('signup') || location.pathname.includes('reset-password') ? null : <Footer/>}
       <Toaster/>
     </div>
   )

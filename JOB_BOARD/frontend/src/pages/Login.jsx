@@ -20,12 +20,13 @@ const Login = () => {
 
     try{
       const res=await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/users/login`, formdata,{withCredentials:true});
-      localStorage.setItem('user', JSON.stringify(res.data.user))
       localStorage.setItem('token', res.data.token)
       if(res.data.user.role === 'user') {
+        localStorage.setItem('user', JSON.stringify(res.data.user))
         setuser(res.data.user)
       }
       if(res.data.user.role === 'employer') {
+        localStorage.setItem('employer', JSON.stringify(res.data.user))
         setemployer(res.data.user)
       }
       setemail('')

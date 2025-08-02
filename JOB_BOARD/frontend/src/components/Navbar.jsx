@@ -12,14 +12,10 @@ const Navbar = () => {
   
     try{
       const res=await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/users/logout`,{withCredentials:true});
-      if (user) {
       localStorage.removeItem('user')
-      setuser(null)
-    }
-    if (employer) {
       localStorage.removeItem('employer')
+      setuser(null)
       setemployer(null)
-    }
     localStorage.removeItem('token') 
     toast.success(res.data.message); 
     navigate('/')
