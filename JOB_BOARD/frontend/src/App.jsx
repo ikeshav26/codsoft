@@ -31,7 +31,7 @@ const App = () => {
           <Route path="/contact" element={<Contact/>}/>
           <Route path="/reset-password" element={<ResetPassword/>}/>
           <Route path="/create-job" element={employer?<CreateJob/>:<Navigate to='/'/>}/>
-          <Route path="/apply-job" element={user?<ApplyJob/>:<Navigate to='/'/>}/>
+          <Route path="/apply-job" element={user || employer?<ApplyJob/>:<Navigate to='/'/>}/>
           <Route path="/explore-jobs" element={user || employer?<ExploreJobs/>:<Navigate to='/'/>}/>
         </Routes>
       </main>
