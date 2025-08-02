@@ -1,6 +1,7 @@
 import cloudinary from "../config/cloudinary.js";
 import Application from "../models/application.model.js";
 import Job from "../models/job.model.js";
+import nodemailer from "nodemailer";
 
 
 export const createJob = async (req, res) => {
@@ -52,7 +53,7 @@ export const getEmployerCreatedJobs = async (req, res) => {
     const jobs = await Job.find({ postedBy: employerId }).populate(
       "postedBy",
       "username email"
-    );
+    ).sort({ createdAt: -1 });
     if (jobs.length === 0) {
       return res
         .status(404)
@@ -182,6 +183,7 @@ export const acceptApplication=async(req,res)=>{
     if(application.status === 'accepted'){
       return res.status(400).json({message: 'Application already accepted'});
     }
+
     application.status = 'accepted';
     await application.save();
 
