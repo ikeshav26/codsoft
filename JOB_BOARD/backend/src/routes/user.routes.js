@@ -1,5 +1,5 @@
 import express from 'express';
-import { login, Logout, sendOtp, signup, userData, verifyOtp } from '../controller/user.controller.js';
+import { contactUs, login, Logout, sendOtp, signup, userData, verifyOtp } from '../controller/user.controller.js';
 import userAuth from '../middlewares/userAuth.js'
 
 
@@ -11,6 +11,7 @@ router.get('/logout',Logout)
 router.get('/me',userAuth,userData)
 router.post('/send-otp',sendOtp)
 router.post('/verify-otp',verifyOtp)
+router.post('/contact',contactUs)
 
 
 export default router; 

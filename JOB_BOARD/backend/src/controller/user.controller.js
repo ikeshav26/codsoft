@@ -177,3 +177,42 @@ export const verifyOtp=async(req,res)=>{
         res.status(500).json({message: 'Internal server error'});
     }
 }
+
+
+export const contactUs=async(req,res)=>{
+    try{
+        const {name,email,message}=req.body;
+        if(!name || !email || !message){
+            return res.status(400).json({message: 'All fields are required'});
+        }
+
+        const auth=nodemailer.createTransport({
+            service: 'gmail',
+            secure: true,
+            port: 465,
+            auth: {
+                user: process.env.EMAIL,
+                pass: process.env.EMAIL_PASSWORD
+            }
+        });
+
+        const receiver={
+            from: process.env.EMAIL,
+            to: email,
+            subject: 'Contact Us Form Submission from ' + name,
+            text: message
+        }
+
+        await auth.sendMail(receiver, (error, info) => {
+            if (error) {
+                return res.status(500).json({ message: 'Error sending email', error });
+            }
+            console.log('Email sent: ' + info.response);
+        });
+
+
+    }catch(err){
+        console.error(err);
+        res.status(500).json({message: 'Internal server error'});
+    }
+}
