@@ -11,6 +11,7 @@ const ApplyJob = () => {
   const [coverLetterBase64, setCoverLetterBase64] = useState("");
   const [resumeFileName, setResumeFileName] = useState("");
   const [coverLetterFileName, setCoverLetterFileName] = useState("");
+  const [loading, setLoading] = useState(false);
   const {navigate}=useContext(AppContext);
 
   const handleFileChange = async (e, type) => {
@@ -40,6 +41,7 @@ const ApplyJob = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const applicationData = {
       applicantName: name,
       applicantEmail: email,
@@ -69,6 +71,8 @@ const ApplyJob = () => {
         error.response?.data?.message ||
           "An error occurred while submitting the application."
       );
+    } finally {
+      setLoading(false);
     }
   };
   return (
@@ -238,9 +242,17 @@ const ApplyJob = () => {
             <div className="pt-6">
               <button
                 type="submit"
-                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4 px-6 rounded-xl font-semibold text-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-lg"
+                disabled={loading}
+                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4 px-6 rounded-xl font-semibold text-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
               >
-                Submit Application
+                {loading ? (
+                  <div className="flex items-center justify-center">
+                    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white mr-3"></div>
+                    Submitting Application...
+                  </div>
+                ) : (
+                  "Submit Application"
+                )}
               </button>
               <p className="text-center text-sm text-gray-500 mt-3">
                 By submitting this application, you agree to our terms and conditions

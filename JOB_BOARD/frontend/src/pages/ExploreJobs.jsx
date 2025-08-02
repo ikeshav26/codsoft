@@ -6,15 +6,19 @@ import { Link } from 'react-router-dom';
 const ExploreJobs = () => {
   const [search, setSearch] = useState('');
   const [jobList, setjobList] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const handleApply=async(job)=>{
     try{
+      setLoading(true);
       const res=await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/jobs/all-jobs`, { withCredentials: true });
       setjobList(res.data.jobs);
     }catch(error) {
       console.error("Error applying for job:", error);
       toast.error(error.response?.data?.message || "An error occurred while applying for the job.");  
+    } finally {
+      setLoading(false);
     }
   }
   handleApply();
@@ -24,6 +28,17 @@ const ExploreJobs = () => {
     const jobText = `${job.title} ${job.description} ${job.company} ${job.location}`.toLowerCase();
     return jobText.includes(search.toLowerCase());
   });
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-gray-100 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600 text-lg">Loading amazing job opportunities...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-gray-100">

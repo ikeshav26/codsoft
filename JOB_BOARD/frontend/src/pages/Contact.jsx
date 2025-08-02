@@ -3,6 +3,7 @@ import axios from 'axios';
 import { toast } from 'react-hot-toast';
 
 const Contact = () => {
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -18,6 +19,7 @@ const Contact = () => {
 
   const handleSubmit = async(e) => {
     e.preventDefault();
+    setLoading(true);
     console.log('Form submitted:', formData);
 
     try{
@@ -27,8 +29,9 @@ const Contact = () => {
     }catch(err){
       console.error('Error submitting form:', err);
       toast.error(err.response?.data?.message || 'An error occurred while submitting the form');
+    } finally {
+      setLoading(false);
     }
-   
   };
 
   return (
@@ -94,9 +97,17 @@ const Contact = () => {
 
               <button
                 type="submit"
-                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4 px-6 rounded-xl font-semibold text-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-lg"
+                disabled={loading}
+                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4 px-6 rounded-xl font-semibold text-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
               >
-                Send Message
+                {loading ? (
+                  <div className="flex items-center justify-center">
+                    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white mr-3"></div>
+                    Sending Message...
+                  </div>
+                ) : (
+                  "Send Message"
+                )}
               </button>
             </form>
           </div>

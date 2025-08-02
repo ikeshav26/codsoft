@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 const CreateJob = () => {
+  const [loading, setLoading] = useState(false);
   const [jobData, setJobData] = useState({
     title: '',
     description: '',
@@ -18,6 +19,7 @@ const CreateJob = () => {
 
   const submitHandler=async(e)=>{
     e.preventDefault();
+    setLoading(true);
     console.log("Job Data Submitted:", jobData);
 
     try{
@@ -37,6 +39,8 @@ const CreateJob = () => {
     }catch(err) {
       console.error("Error creating job:", err);
       toast.error(err.response.data.message)
+    } finally {
+      setLoading(false);
     }
   }
   return (
@@ -200,9 +204,17 @@ const CreateJob = () => {
               <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t border-gray-200">
                 <button
                   type="submit"
-                  className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 px-6 rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 font-medium shadow-lg"
+                  disabled={loading}
+                  className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 px-6 rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 font-medium shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Post Job Now
+                  {loading ? (
+                    <div className="flex items-center justify-center">
+                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                      Posting Job...
+                    </div>
+                  ) : (
+                    "Post Job Now"
+                  )}
                 </button>
               </div>
             </form>

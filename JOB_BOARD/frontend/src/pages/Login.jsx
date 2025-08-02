@@ -6,6 +6,8 @@ import AppContext from '../context/AppContext'
 
 const Login = () => {
   const [activeTab, setActiveTab] = useState('login') 
+  const [loginLoading, setLoginLoading] = useState(false)
+  const [otpLoading, setOtpLoading] = useState(false)
   const [email, setemail] = useState('')
   const [password, setpassword] = useState('')
   const [emailToOtp, setemailToOtp] = useState("")
@@ -13,6 +15,7 @@ const Login = () => {
 
   const handleLogin=async(e)=>{
     e.preventDefault();
+    setLoginLoading(true);
     const formdata={
       email,
       password
@@ -36,11 +39,14 @@ const Login = () => {
     }catch(err){
       console.error("Error during login:", err);
       toast.error(err.response.data.message || "An error occurred during login.");
+    } finally {
+      setLoginLoading(false);
     }
   }
 
   const handleResetPassword=async(e)=>{
     e.preventDefault();
+    setOtpLoading(true);
     try{
 const res=await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/users/send-otp`, { email: emailToOtp }, { withCredentials: true });
 toast.success(res.data.message);
@@ -49,6 +55,8 @@ setemailToOtp('');
     }catch(err){
       console.error("Error sending OTP:", err);
       toast.error(err.response.data.message || "An error occurred while sending OTP.");
+    } finally {
+      setOtpLoading(false);
     }
   }
 
@@ -143,9 +151,17 @@ setemailToOtp('');
 
               <button
                 type="submit"
-                className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+                disabled={loginLoading}
+                className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Login
+                {loginLoading ? (
+                  <div className="flex items-center justify-center">
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                    Logging in...
+                  </div>
+                ) : (
+                  "Login"
+                )}
               </button>
             </form>
           )}
@@ -174,9 +190,17 @@ setemailToOtp('');
 
               <button
                 type="submit"
-                className="w-full bg-orange-600 text-white py-2 rounded hover:bg-orange-700 transition"
+                disabled={otpLoading}
+                className="w-full bg-orange-600 text-white py-2 rounded hover:bg-orange-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Send Reset OTP
+                {otpLoading ? (
+                  <div className="flex items-center justify-center">
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                    Sending OTP...
+                  </div>
+                ) : (
+                  "Send Reset OTP"
+                )}
               </button>
 
               <div className="text-center">

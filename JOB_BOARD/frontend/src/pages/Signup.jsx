@@ -5,6 +5,7 @@ import { toast } from 'react-hot-toast'
 import AppContext from '../context/AppContext'
 
 const Signup = () => {
+  const [loading, setLoading] = useState(false)
   const [username, setusername] = useState('')
   const [email, setemail] = useState('')
   const [password, setpassword] = useState('')
@@ -14,6 +15,7 @@ const Signup = () => {
 
   const handleSubmit=async(e)=>{
     e.preventDefault();
+    setLoading(true);
     const formdata={
       username,
       email,
@@ -43,6 +45,8 @@ const Signup = () => {
     }catch(error){
       console.error("Error during signup:", error);
      toast.error(error.response.data.message || "An error occurred during signup.");
+    } finally {
+      setLoading(false);
     }
   }
   return (
@@ -128,9 +132,17 @@ const Signup = () => {
 
             <button
               type="submit"
-              className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+              disabled={loading}
+              className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Sign Up
+              {loading ? (
+                <div className="flex items-center justify-center">
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                  Creating Account...
+                </div>
+              ) : (
+                "Sign Up"
+              )}
             </button>
           </form>
 

@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import AppContext from '../context/AppContext';
 
 const ResetPassword = () => {
+  const [loading, setLoading] = useState(false);
   const [email, setemail] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [otp, setOtp] = useState("");
@@ -12,6 +13,7 @@ const ResetPassword = () => {
 
   const submitHandler=async(e)=>{
     e.preventDefault();
+    setLoading(true);
     const formdata={
       oldEmail: email,
       newPassword,
@@ -29,6 +31,8 @@ const ResetPassword = () => {
     }catch(err){
       console.error("Error during password reset:", err);
       toast.error(err.response.data.message );
+    } finally {
+      setLoading(false);
     }
   }
   return (
@@ -109,9 +113,17 @@ const ResetPassword = () => {
 
             <button 
               type="submit" 
-              className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors duration-300 font-medium"
+              disabled={loading}
+              className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors duration-300 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Reset Password
+              {loading ? (
+                <div className="flex items-center justify-center">
+                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                  Resetting Password...
+                </div>
+              ) : (
+                "Reset Password"
+              )}
             </button>
           </form>
 
