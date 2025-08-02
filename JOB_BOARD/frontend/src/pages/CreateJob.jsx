@@ -136,12 +136,12 @@ const CreateJob = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">Salary Range *</label>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">Salary *</label>
                   <input
                     value={jobData.salary}
                     onChange={(e) => setJobData({ ...jobData, salary: e.target.value })}
                     type="number"
-                    placeholder="e.g. $80,000 - $120,000"
+                    placeholder="e.g. $80,000"
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                     required
                   />

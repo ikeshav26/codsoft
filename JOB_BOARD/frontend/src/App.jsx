@@ -13,6 +13,7 @@ import ResetPassword from './pages/ResetPassword'
 import CreateJob from './pages/CreateJob'
 import ApplyJob from './pages/ApplyJob'
 import ExploreJobs from './pages/ExploreJobs'
+import Applications from './pages/Applications'
 
 import { Toaster } from 'react-hot-toast'
 
@@ -33,6 +34,7 @@ const App = () => {
           <Route path="/create-job" element={employer?<CreateJob/>:<Navigate to='/'/>}/>
           <Route path="/apply-job/:id" element={<ApplyJob/>}/>
           <Route path="/explore-jobs" element={<ExploreJobs/>}/>
+          <Route path='/applications/:id' element={employer ? <Applications/> : <Navigate to='/'/>}/>
         </Routes>
       </main>
       {location.pathname.includes('login') || location.pathname.includes('signup') || location.pathname.includes('reset-password') ? null : <Footer/>}
