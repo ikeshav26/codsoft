@@ -121,7 +121,7 @@ const ExploreJobs = () => {
 
                 {/* Apply Button */}
                 <Link
-                  to="/apply-job"
+                  to={`/apply-job/${job._id}`}
                   className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 px-4 rounded-xl font-semibold text-center block hover:from-blue-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105"
                 >
                   Apply Now
