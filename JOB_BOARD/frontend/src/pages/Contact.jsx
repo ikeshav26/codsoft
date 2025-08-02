@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import axios from 'axios';
+import { toast } from 'react-hot-toast';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -14,9 +16,18 @@ const Contact = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
     console.log('Form submitted:', formData);
+
+    try{
+      const res=await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/users/contact`, formData);
+      toast.success(res.data.message);
+      setFormData({ name: '', email: '', message: '' });
+    }catch(err){
+      console.error('Error submitting form:', err);
+      toast.error(err.response?.data?.message || 'An error occurred while submitting the form');
+    }
    
   };
 

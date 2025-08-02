@@ -197,9 +197,9 @@ export const contactUs=async(req,res)=>{
         });
 
         const receiver={
-            from: process.env.EMAIL,
-            to: email,
-            subject: 'Contact Us Form Submission from ' + name,
+            from: email,
+            to:process.env.EMAIL,
+            subject: 'Contact Us Form Submission from ' + name + ' ' + email,
             text: message
         }
 
@@ -209,6 +209,8 @@ export const contactUs=async(req,res)=>{
             }
             console.log('Email sent: ' + info.response);
         });
+
+        res.status(200).json({message: 'Message sent successfully'});
 
 
     }catch(err){
