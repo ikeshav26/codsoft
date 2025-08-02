@@ -26,6 +26,18 @@ const jobSchema = new mongoose.Schema({
         ref: 'User',
         required: true
     },
+    jobType: {
+        type:String,
+        required: true,
+    },
+    experience: {
+        type: String,
+        required: true
+    },
+    category: {
+        type: String,
+        required: true
+    },
     deadline:{
         type: Date,
         required: true

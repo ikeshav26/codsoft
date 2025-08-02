@@ -12,7 +12,7 @@ export const createJob = async (req, res) => {
         .json({ message: "Access denied. Only admins can create jobs." });
     }
 
-    const { title, description, company, location, salary, deadline } =
+    const { title, description, company, location, salary, deadline, category, jobType, experience } =
       req.body;
 
     const newJob = new Job({
@@ -22,6 +22,9 @@ export const createJob = async (req, res) => {
       location,
       salary,
       deadline,
+      category,
+      jobType,
+      experience,
       postedBy: req.user.id,
     });
 

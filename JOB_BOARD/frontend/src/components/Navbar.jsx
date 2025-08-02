@@ -57,12 +57,6 @@ const Navbar = () => {
               >
                 Explore Jobs
               </Link>
-              <Link 
-                to="/contact" 
-                className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
-              >
-                Contact
-              </Link>
               
               {/* Employer specific links */}
               {employer && (
@@ -79,17 +73,32 @@ const Navbar = () => {
                   >
                     Dashboard
                   </Link>
+
+                  <Link 
+                to="/contact" 
+                className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+              >
+                Contact
+              </Link>
                 </>
               )}
 
               {/* User specific links */}
               {user && (
+                <>
                 <Link 
                   to="/user-dashboard" 
                   className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
                 >
                   Dashboard
                 </Link>
+                <Link 
+                to="/contact" 
+                className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+              >
+                Contact
+              </Link>
+              </>
               )}
             </div>
           </div>
