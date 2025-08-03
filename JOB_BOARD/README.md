@@ -155,8 +155,8 @@ JOB_BOARD/
    ```
 
 The application will be available at:
-- Frontend: http://localhost:5173
-- Backend: http://localhost:5000
+- Frontend:https://job.ikeshav.tech
+- Backend: https://codsoft-k86o.onrender.com
 
 ## 📱 Key Pages & Features
 
@@ -222,13 +222,13 @@ The application is fully responsive and optimized for:
 
 ## 🚀 Deployment
 
-### Backend Deployment (Railway/Heroku)
+### Backend Deployment (Render)
 1. Create a new project on your hosting platform
 2. Connect your GitHub repository
 3. Set environment variables
 4. Deploy the backend
 
-### Frontend Deployment (Vercel/Netlify)
+### Frontend Deployment (Vercel)
 1. Connect your GitHub repository
 2. Set build command: `npm run build`
 3. Set environment variables
@@ -245,7 +245,7 @@ The application is fully responsive and optimized for:
 ## 📧 Contact
 
 For questions or support, please contact:
-- **Email**: support@jobboard.com
+- **Email**:keshavgilhotra26@gmail.com
 - **GitHub**: [@ikeshav26](https://github.com/ikeshav26)
 
 ## 📄 License
