@@ -15,7 +15,7 @@ const AppProvider=({children})=>{
         if (storeduser) {
             setuser(JSON.parse(storeduser));
         }
-    }, [])
+    }, [localStorage.getItem('user')]);
 
     const value={
         user,

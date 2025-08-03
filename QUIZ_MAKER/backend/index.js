@@ -4,10 +4,16 @@ import cookieParser from 'cookie-parser';
 import dbConnect from './src/config/dbConnection.js';
 import userRoutes from './src/routes/user.routes.js';
 import quizRoutes from './src/routes/quiz.routes.js';
+import cors from 'cors';
 
 const app=express();
 dotenv.config();
 dbConnect();
+
+app.use(cors({
+    origin: process.env.CLIENT_URL,
+    credentials: true,
+}));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
