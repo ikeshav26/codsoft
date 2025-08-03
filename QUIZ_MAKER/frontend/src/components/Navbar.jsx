@@ -44,10 +44,16 @@ const Navbar = () => {
           <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-400 transition-all duration-200 group-hover:w-full"></span>
         </Link>
         {user && (
-          <Link to="/dashboard" className="text-gray-300 hover:text-blue-400 transition-colors duration-200 text-sm font-medium relative group">
-            Dashboard
-            <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-400 transition-all duration-200 group-hover:w-full"></span>
-          </Link>
+          <>
+            <Link to="/create-quiz" className="text-gray-300 hover:text-blue-400 transition-colors duration-200 text-sm font-medium relative group">
+              Create Quiz
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-400 transition-all duration-200 group-hover:w-full"></span>
+            </Link>
+            <Link to="/dashboard" className="text-gray-300 hover:text-blue-400 transition-colors duration-200 text-sm font-medium relative group">
+              Dashboard
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-400 transition-all duration-200 group-hover:w-full"></span>
+            </Link>
+          </>
         )}
         <Link to="/contact" className="text-gray-300 hover:text-blue-400 transition-colors duration-200 text-sm font-medium relative group">
           Contact
@@ -125,13 +131,22 @@ const Navbar = () => {
             Quizes
           </Link>
           {user && (
-            <Link 
-              to="/dashboard" 
-              className="block text-gray-300 hover:text-blue-400 transition-colors duration-200 text-sm font-medium py-2"
-              onClick={closeMenu}
-            >
-              Dashboard
-            </Link>
+            <>
+              <Link 
+                to="/create-quiz" 
+                className="block text-gray-300 hover:text-blue-400 transition-colors duration-200 text-sm font-medium py-2"
+                onClick={closeMenu}
+              >
+                Create Quiz
+              </Link>
+              <Link 
+                to="/dashboard" 
+                className="block text-gray-300 hover:text-blue-400 transition-colors duration-200 text-sm font-medium py-2"
+                onClick={closeMenu}
+              >
+                Dashboard
+              </Link>
+            </>
           )}
           <Link 
             to="/contact" 
