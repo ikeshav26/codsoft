@@ -6,16 +6,24 @@ const AppContext=createContext();
 
 
 const AppProvider=({children})=>{
-    const [user, setuser] = useState(true);
+    const [user, setuser] = useState(null);
     const navigate=useNavigate();
     const location=useLocation();
 
     useEffect(() => {
         const storeduser = localStorage.getItem('user');
         if (storeduser) {
-            setuser(JSON.parse(storeduser));
+            try {
+                setuser(JSON.parse(storeduser));
+            } catch (error) {
+                console.error('Error parsing stored user:', error);
+                localStorage.removeItem('user');
+                setuser(null);
+            }
+        } else {
+            setuser(null);
         }
-    }, [localStorage.getItem('user')]);
+    }, []);
 
     const value={
         user,

@@ -8,7 +8,7 @@ import {AppContext} from '../context/AppContext';
 const Login = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-  const {navigate} = useContext(AppContext);
+  const {navigate,setuser} = useContext(AppContext);
 
   const handleSubmit = async(e) => {
     e.preventDefault();
@@ -21,6 +21,7 @@ const Login = () => {
       localStorage.setItem('user', JSON.stringify(res.data.user));
       setEmail('');
       setPassword('');
+      setuser(res.data.user);
       toast.success(res.data.message);
       navigate('/');
     }catch(err){

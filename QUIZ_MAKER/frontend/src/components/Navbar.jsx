@@ -1,18 +1,28 @@
 import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AppContext } from '../context/AppContext';
+import axios from 'axios';
+import { toast } from 'react-hot-toast';
 
 const Navbar = () => {
  const {user, setuser, navigate}=useContext(AppContext)
  const [isMenuOpen, setIsMenuOpen] = useState(false)
  const userName = user ? user.username || "Guest":"Guest";
 
- const handleLogout = () => {
-   localStorage.removeItem('user');
+ const handleLogout =async () => {
+     try{
+      const res=await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/users/logout`, { withCredentials: true });
+      toast.success(res.data.message);
+      setuser(null);
+      localStorage.removeItem('user');
     localStorage.removeItem('token');
-   setuser(null);
    navigate('/');
    setIsMenuOpen(false);
+    }catch(err){
+      console.error("Error during logout:", err);
+      toast.error(err.response ? err.response.data.message : "An error occurred during logout.");
+    }
+   
  }
 
  const toggleMenu = () => {

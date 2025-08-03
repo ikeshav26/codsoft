@@ -9,7 +9,7 @@ const Signup = () => {
   const [email, setemail] = useState("")
   const [password, setpassword] = useState("")
 
-  const {navigate}=useContext(AppContext)
+  const {navigate,setuser}=useContext(AppContext)
 
 
 
@@ -26,6 +26,7 @@ const Signup = () => {
       setname('');
       setpassword('');
       toast.success(res.data.message);
+      setuser(res.data.user);
       navigate('/');
     }catch(err){
       console.error("Error during signup:", err);
