@@ -27,13 +27,13 @@ export const createQuiz=async(req,res)=>{
 
 export const addQuestionToQuiz = async (req, res) => {
     try{
-        const {questionText,options,correctAnswer}=req.body;
-        const {quizId} = req.params;
+        const {questionText,options,correctAnswer,quizId}=req.body;
         if(!questionText || !options || correctAnswer === undefined){
             return res.status(400).json({message: 'All fields are required'});
         }
 
-        const quiz = await Quiz.findOne(quizId);
+        const quiz = await Quiz.findOne({_id: quizId});
+        console.log("Quiz found:", quiz);
         if(!quiz){
             return res.status(404).json({message: 'Quiz not found'});
         }
@@ -55,4 +55,15 @@ export const addQuestionToQuiz = async (req, res) => {
         console.error(err);
         res.status(500).json({message: 'Internal server error'});
 }
+}
+
+
+export const allQuizes=async(req,res)=>{
+    try{
+        const quizes=await Quiz.find().populate('createdBy', 'username').populate('questions').sort({createdAt: -1});
+        res.status(200).json(quizes);
+    }catch(err){
+        console.error(err);
+        res.status(500).json({message: 'Internal server error'});   
+    }
 }
