@@ -6,7 +6,7 @@ const AppContext=createContext();
 
 
 const AppProvider=({children})=>{
-    const [user, setuser] = useState(null);
+    const [user, setuser] = useState(true);
     const navigate=useNavigate();
     const location=useLocation();
 

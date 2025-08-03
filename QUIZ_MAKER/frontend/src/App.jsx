@@ -26,7 +26,7 @@ const App = () => {
       <Route path='/signup' element={<Signup/>}/>
       <Route path='/dashboard' element={<Dashboard/>}/>
      </Routes>
-    {location.pathname !== '/login' && location.pathname !== '/signup' && <Navbar/>}
+    {location.pathname !== '/login' && location.pathname !== '/signup' && <Footer/>}
      <Toaster/>
     </div>
   )
