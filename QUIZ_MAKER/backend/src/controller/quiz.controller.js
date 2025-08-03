@@ -27,10 +27,15 @@ export const createQuiz=async(req,res)=>{
 
 export const addQuestionToQuiz = async (req, res) => {
     try{
-        const {questionText,options,correctAnswer,quizId}=req.body;
+        const {id}=req.params;
+        const quizId=id;
+        console.log("Adding question to quiz with ID:", quizId);
+        
+        const {questionText,options,correctAnswer}=req.body;
         if(!questionText || !options || correctAnswer === undefined){
             return res.status(400).json({message: 'All fields are required'});
         }
+        
 
         const quiz = await Quiz.findOne({_id: quizId});
         console.log("Quiz found:", quiz);
