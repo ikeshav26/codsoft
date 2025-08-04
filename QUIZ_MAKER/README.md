@@ -2,8 +2,6 @@
 
 A modern, full-stack web application for creating, managing, and taking interactive quizzes. Built with React.js frontend and Node.js backend, featuring a sleek dark theme and responsive design.
 
-![QuizMaker Banner](https://via.placeholder.com/1200x400/1f2937/60a5fa?text=QuizMaker+-+Create+Amazing+Quizzes)
-
 ## 🚀 Features
 
 ### 🎯 Core Functionality
@@ -251,7 +249,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 Support
 
-For support, email keshav@example.com or create an issue on GitHub.
+For support, email keshavgilhotra26@gmail.com or create an issue on GitHub.
 
 ---
 

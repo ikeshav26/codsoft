@@ -2,14 +2,13 @@
 
 Welcome to my portfolio of projects developed during my **Virtual Internship at CodSoft**! This repository showcases two comprehensive full-stack web applications built with modern technologies and professional development practices.
 
-![CodSoft Internship Banner](https://via.placeholder.com/1200x400/1f2937/60a5fa?text=CodSoft+Virtual+Internship+-+Full+Stack+Development)
 
 ## 🎯 Internship Overview
 
 **Intern**: Keshav  
 **Company**: CodSoft  
 **Position**: Full Stack Web Developer  
-**Duration**: [Internship Period]  
+**Duration**: 1 month
 **Focus**: Modern Web Development with React.js, Node.js, and MongoDB  
 
 ### 🎓 Learning Objectives Achieved
@@ -241,14 +240,14 @@ Both applications feature:
 
 ## 📞 Contact & Collaboration
 
-**Developer**: Keshav  
-**Email**: [your-email@example.com]  
+**Developer**: Keshav Gilhotra
+**Email**: [keshavgilhotra26@gmail.com]
 **GitHub**: [@ikeshav26](https://github.com/ikeshav26)  
-**LinkedIn**: [Your LinkedIn Profile]  
+**LinkedIn**: [https://www.linkedin.com/in/ikeshav-gilhotra/]  
 
 ### 🤝 Internship Mentor
 **Company**: CodSoft  
-**Website**: [CodSoft Website]  
+**Website**: [https://www.codsoft.in/]  
 **Program**: Virtual Internship in Web Development  
 
 ## 🙏 Acknowledgments
