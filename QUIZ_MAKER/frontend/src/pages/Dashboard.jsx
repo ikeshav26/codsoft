@@ -1,13 +1,22 @@
 import React, { useEffect, useState, useContext } from 'react'
 import axios from 'axios'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { AppContext } from '../context/AppContext'
 import toast from 'react-hot-toast'
 
 const Dashboard = () => {
-  const { user } = useContext(AppContext)
+  const { user, setUser } = useContext(AppContext)
   const [myCreatedQuizes, setmyCreatedQuizes] = useState([])
   const [myPlayedQuizes, setmyPlayedQuizes] = useState([])
+  const navigate = useNavigate()
+
+  const handleUnauthorized = () => {
+    localStorage.removeItem('user')
+    localStorage.removeItem('token')
+    setUser(null)
+    toast.error('Please login to access this page')
+    navigate('/')
+  }
 
 
   const handleDeleteQuiz=async(quizId)=>{
@@ -21,6 +30,10 @@ const Dashboard = () => {
         }
       }catch(err){
         console.error("Error deleting quiz:", err)
+        if (err.response?.status === 401) {
+          handleUnauthorized()
+          return
+        }
         toast.error("Failed to delete quiz")
       }
     }
@@ -32,6 +45,10 @@ const Dashboard = () => {
         setmyCreatedQuizes(res.data.quizes);
       }catch(err){
         console.error("Error fetching created quizes:", err)
+        if (err.response?.status === 401) {
+          handleUnauthorized()
+          return
+        }
       }
     }
 
@@ -41,6 +58,10 @@ const Dashboard = () => {
         setmyPlayedQuizes(res.data.scores);
       }catch(err){
         console.error("Error fetching played quizes:", err)
+        if (err.response?.status === 401) {
+          handleUnauthorized()
+          return
+        }
       }
     }
 
