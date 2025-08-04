@@ -66,7 +66,7 @@ export const addQuestionToQuiz = async (req, res) => {
 
 export const allQuizes=async(req,res)=>{
     try{
-        const quizes=await Quiz.find().populate('createdBy', 'username').populate('questions').sort({createdAt: -1});
+        const quizes=await Quiz.find().populate('createdBy', 'name').populate('questions').sort({createdAt: -1});
         res.status(200).json(quizes);
     }catch(err){
         console.error(err);

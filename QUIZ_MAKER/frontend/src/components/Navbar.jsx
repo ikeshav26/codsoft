@@ -3,11 +3,19 @@ import { Link } from 'react-router-dom';
 import { AppContext } from '../context/AppContext';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
+import { useEffect } from 'react';
 
 const Navbar = () => {
  const {user, setuser, navigate}=useContext(AppContext)
  const [isMenuOpen, setIsMenuOpen] = useState(false)
- const userName = user ? user.username || "Guest":"Guest";
+ const [userName, setUserName] = useState("")
+
+ useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      setUserName(JSON.parse(storedUser).name);
+    }
+ }, [user])
 
  const handleLogout =async () => {
      try{
