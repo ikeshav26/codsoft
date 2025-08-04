@@ -1,26 +1,53 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import axios from 'axios'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { AppContext } from '../context/AppContext'
+import { toast } from 'react-hot-toast'
 
 const Quizes = () => {
   const [quizes, setQuizes] = useState([])
+  const {setuser,navigate} = useContext(AppContext)
 
   useEffect(() => {
   const fetchQuizes=async()=>{
     try{
       const res=await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/quiz/all-quizes`,{withCredentials:true})
-      setQuizes(res.data)
-      console.log("Fetched quizes:", res.data)
+      
+    
+      if(Array.isArray(res.data)) {
+        setQuizes(res.data)
+        console.log("Fetched quizes:", res.data)
+      } else if(res.data.message === 'Unauthorized access') {
+        console.error("Unauthorized access please login first")
+        toast.error("Unauthorized access, please login first")
+        localStorage.removeItem('user')
+        localStorage.removeItem('token')
+        setuser(null)
+        navigate('/')
+      } else {
+        console.log("Unexpected response format:", res.data)
+        setQuizes([])
+      }
     }catch(err){
       console.error("Error fetching quizes:", err)
+      
+
+      if(err.response?.status === 401 || err.response?.data?.message === 'Unauthorized access') {
+        console.error("Unauthorized access please login first")
+        toast.error("Unauthorized access, please login first")
+        localStorage.removeItem('user')
+        localStorage.removeItem('token')
+        setuser(null)
+        navigate('/')
+      } else {
+        toast.error("Failed to fetch quizzes")
+      }
     }
   }
   fetchQuizes()
-  }, [])
+  }, [navigate, setuser])
   const handlePlayQuiz = (quizId) => {
-    // Navigate to play quiz page or implement play logic
     console.log("Playing quiz:", quizId)
-    // You can add navigation logic here
   }
 
   const formatDate = (dateString) => {

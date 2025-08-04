@@ -29,8 +29,8 @@ const Footer = () => {
             <Link to="/quizes" className="text-gray-400 hover:text-blue-400 transition-colors duration-200 text-sm">
               Quizes
             </Link>
-            <Link to="/contact" className="text-gray-400 hover:text-blue-400 transition-colors duration-200 text-sm">
-              Contact
+            <Link to="/create-quiz" className="text-gray-400 hover:text-blue-400 transition-colors duration-200 text-sm">
+              Create Quiz
             </Link>
           </div>
           

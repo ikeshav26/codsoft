@@ -2,18 +2,34 @@ import React, { useEffect, useState, useContext } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 import { AppContext } from '../context/AppContext'
+import toast from 'react-hot-toast'
 
 const Dashboard = () => {
   const { user } = useContext(AppContext)
   const [myCreatedQuizes, setmyCreatedQuizes] = useState([])
   const [myPlayedQuizes, setmyPlayedQuizes] = useState([])
 
+
+  const handleDeleteQuiz=async(quizId)=>{
+      try{
+        const res=await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/quiz/my-quiz/delete/${quizId}`, {withCredentials: true})
+        if(res.status === 200) { 
+          toast.success("Quiz deleted successfully")
+          setmyCreatedQuizes(prev => prev.filter(quiz => quiz._id !== quizId))
+        } else {
+          toast.error("Failed to delete quiz")
+        }
+      }catch(err){
+        console.error("Error deleting quiz:", err)
+        toast.error("Failed to delete quiz")
+      }
+    }
+
   useEffect(() => {
     const fetchMyCreatedQuizes=async()=>{
       try{
         const res=await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/quiz/my-quizes`, {withCredentials: true})
         setmyCreatedQuizes(res.data.quizes);
-        console.log("Fetched created quizes:", res.data.quizes);
       }catch(err){
         console.error("Error fetching created quizes:", err)
       }
@@ -23,14 +39,18 @@ const Dashboard = () => {
       try{
         const res=await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/quiz/my-played/quizes/scores`, {withCredentials: true})
         setmyPlayedQuizes(res.data.scores);
-        console.log("Fetched played quizes:", res.data.scores);
       }catch(err){
         console.error("Error fetching played quizes:", err)
       }
     }
+
+    
     fetchMyCreatedQuizes();
     fetchMyPlayedQuizes();
   }, [])
+
+  
+  
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString('en-US', {
@@ -242,6 +262,14 @@ const Dashboard = () => {
                             <span>➕</span> Add Questions
                           </Link>
                         </div>
+                        <div className="flex gap-2 ml-4">
+                          <button
+                           onClick={() => handleDeleteQuiz(quiz._id)}
+                            className="bg-red-600 text-white px-3 py-1 rounded text-xs font-medium hover:bg-red-700 transition-colors duration-200 flex items-center gap-1"
+                          >
+                            <span>🗑️</span> Delete
+                          </button>
+                        </div>
                       </div>
                     </div>
                   ))}
@@ -266,7 +294,7 @@ const Dashboard = () => {
             <div className="p-6">
               {myPlayedQuizes.length === 0 ? (
                 <div className="text-center py-8">
-                  <div className="text-gray-500 text-5xl mb-4">�</div>
+                  <div className="text-gray-500 text-5xl mb-4">🎮</div>
                   <h3 className="text-lg font-medium text-white mb-2">Your Adventure Awaits!</h3>
                   <p className="text-gray-400 text-sm mb-4">Ready to test your knowledge? Take your first quiz and start your learning journey!</p>
                   <Link

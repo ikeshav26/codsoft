@@ -1,5 +1,5 @@
 import express from 'express';
-import { addQuestionToQuiz, allQuizes, createQuiz, getQuizById, getUserCreatedQuizes, getUserPlayedQuizesScore, saveUserPlayerScore } from '../controller/quiz.controller.js';
+import { addQuestionToQuiz, allQuizes, createQuiz, deleteQuiz, getQuizById, getUserCreatedQuizes, getUserPlayedQuizesScore, saveUserPlayerScore } from '../controller/quiz.controller.js';
 import  {userAuth} from '../middlewares/user.auth.js';
 
 const router=express.Router();
@@ -11,6 +11,7 @@ router.post('/create',userAuth,createQuiz)
 router.post('/add-question/:id',userAuth,addQuestionToQuiz)
 router.post('/submit-quiz/:id',userAuth,saveUserPlayerScore)
 router.get('/:id', userAuth,getQuizById)
+router.get('/my-quiz/delete/:id',userAuth,deleteQuiz)
 
 
 

@@ -173,3 +173,21 @@ export const getUserPlayedQuizesScore=async(req,res)=>{
         res.status(500).json({message: 'Internal server error'});
     }
 }
+
+export const deleteQuiz=async(req,res)=>{
+    try{
+        const {id}=req.params;
+        if(!id || id === 'undefined' || id === 'null') {
+            return res.status(400).json({message: 'Quiz ID is required'});
+        }
+
+        const quiz=await Quiz.findByIdAndDelete(id);
+        if(!quiz){
+            return res.status(404).json({message: 'Quiz not found'});
+        }
+        res.status(200).json({message: 'Quiz deleted successfully', quiz});
+    }catch(err){
+        console.error(err);
+        res.status(500).json({message: 'Internal server error'});
+    }
+}
