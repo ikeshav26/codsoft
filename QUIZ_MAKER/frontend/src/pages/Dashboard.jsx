@@ -236,7 +236,7 @@ const Dashboard = () => {
                         </div>
                         <div className="flex gap-2 ml-4">
                           <Link
-                            to={`/add-questions-to-quiz/${quiz._id}`}
+                            to={`/add-question/quiz/${quiz._id}`}
                             className="bg-green-600 text-white px-3 py-1 rounded text-xs font-medium hover:bg-green-700 transition-colors duration-200 flex items-center gap-1"
                           >
                             <span>➕</span> Add Questions

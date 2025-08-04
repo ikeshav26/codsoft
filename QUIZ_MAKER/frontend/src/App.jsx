@@ -13,6 +13,7 @@ import { AppContext } from './context/AppContext'
 import CreateQuiz from './pages/CreateQuiz'
 import { Navigate } from 'react-router-dom'
 import PlayQuiz from './pages/PlayQuiz'
+import AddQuestionsToQuiz from './pages/AddQuestionsToQuiz'
 
 const App = () => {
   const {user,location}=useContext(AppContext)
@@ -27,6 +28,7 @@ const App = () => {
       <Route path='/signup' element={!user?<Signup/>:<Navigate to='/'/>}/>
       <Route path='/dashboard' element={user ? <Dashboard/> : <Navigate to='/'/>}/>
       <Route path='/create-quiz' element={user ? <CreateQuiz/> : <Navigate to='/'/>}/>
+      <Route path='/add-question/quiz/:id' element={<AddQuestionsToQuiz/>}/>
       <Route path='/play-quiz/:id' element={<PlayQuiz/> }/>
      </Routes>
     {location.pathname !== '/login' && location.pathname !== '/signup' && <Footer/>}
