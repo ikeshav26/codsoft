@@ -1,0 +1,25 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background Circle -->
+  <circle cx="16" cy="16" r="16" fill="url(#gradient)" />
+  
+  <!-- Briefcase Icon -->
+  <rect x="9" y="12" width="14" height="10" rx="2" stroke="white" stroke-width="2" fill="none"/>
+  <path d="M13 12V10C13 8.89543 13.8954 8 15 8H17C18.1046 8 19 8.89543 19 10V12" 
+        stroke="white" stroke-width="2" fill="none"/>
+  <line x1="9" y1="17" x2="23" y2="17" stroke="white" stroke-width="2"/>
+  <rect x="14" y="15" width="4" height="2" rx="1" fill="white"/>
+  
+  <!-- Decorative elements -->
+  <circle cx="7" cy="7" r="1.5" fill="rgba(255,255,255,0.3)"/>
+  <circle cx="25" cy="9" r="1" fill="rgba(255,255,255,0.2)"/>
+  <circle cx="26" cy="23" r="1.5" fill="rgba(255,255,255,0.25)"/>
+  <circle cx="6" cy="25" r="1" fill="rgba(255,255,255,0.2)"/>
+  
+  <!-- Gradient Definition -->
+  <defs>
+    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#059669;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#3B82F6;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+</svg>
