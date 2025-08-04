@@ -30,6 +30,17 @@ export const addQuestionToQuiz = async (req, res) => {
     try{
         const {id}=req.params;
         const quizId=id;
+        
+        // Validate if ID is provided and is a valid ObjectId format
+        if(!quizId || quizId === 'undefined' || quizId === 'null') {
+            return res.status(400).json({message: 'Quiz ID is required'});
+        }
+        
+        // Check if ID is a valid MongoDB ObjectId format (24 character hex string)
+        if(!/^[0-9a-fA-F]{24}$/.test(quizId)) {
+            return res.status(400).json({message: 'Invalid Quiz ID format'});
+        }
+        
         console.log("Adding question to quiz with ID:", quizId);
         
         const {questionText,options,correctAnswer}=req.body;
@@ -78,13 +89,24 @@ export const allQuizes=async(req,res)=>{
 export const getQuizById=async(req,res)=>{
     try{
         const {id}=req.params;
+        
+        // Validate if ID is provided and is a valid ObjectId format
+        if(!id || id === 'undefined' || id === 'null') {
+            return res.status(400).json({message: 'Quiz ID is required'});
+        }
+        
+        // Check if ID is a valid MongoDB ObjectId format (24 character hex string)
+        if(!/^[0-9a-fA-F]{24}$/.test(id)) {
+            return res.status(400).json({message: 'Invalid Quiz ID format'});
+        }
+        
         const quiz=await Quiz.findById(id).populate('createdBy', 'username').populate('questions');
         if(!quiz){
             return res.status(404).json({message: 'Quiz not found'});
         }
         res.status(200).json({message: 'Quiz fetched successfully', quiz});
     }catch(err){
-        console.error(err);
+        console.error('Error in getQuizById:', err);
         res.status(500).json({message: 'Internal server error'});
     }
 }
@@ -109,13 +131,18 @@ export const saveUserPlayerScore=async(req,res)=>{
         const userId=req.user;
         const quizId=req.params.id;
 
+        // Validate if ID is provided and is a valid ObjectId format
+        if(!quizId || quizId === 'undefined' || quizId === 'null') {
+            return res.status(400).json({message: 'Quiz ID is required'});
+        }
+        
+        // Check if ID is a valid MongoDB ObjectId format (24 character hex string)
+        if(!/^[0-9a-fA-F]{24}$/.test(quizId)) {
+            return res.status(400).json({message: 'Invalid Quiz ID format'});
+        }
+
         console.log("Saving score for user ID:", userId, "for quiz ID:", quizId, "with score:", score);
 
-
-
-        if(!score || !quizId){
-            return res.status(400).json({message: 'Score and quiz ID are required'});
-        }
 
         const scoreEntry=new Score({
             userId,

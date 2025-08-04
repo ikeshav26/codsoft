@@ -6,11 +6,11 @@ const router=express.Router();
 
 router.get('/all-quizes',userAuth,allQuizes)
 router.get('/my-quizes',userAuth,getUserCreatedQuizes)
-router.post('/submit-quiz/:id',userAuth,saveUserPlayerScore)
-router.get('/:id', userAuth,getQuizById)
+router.get('/my-played/quizes/scores',userAuth,getUserPlayedQuizesScore)
 router.post('/create',userAuth,createQuiz)
 router.post('/add-question/:id',userAuth,addQuestionToQuiz)
-router.get('/my-played/quizes/scores',userAuth,getUserPlayedQuizesScore)
+router.post('/submit-quiz/:id',userAuth,saveUserPlayerScore)
+router.get('/:id', userAuth,getQuizById)
 
 
 

@@ -29,7 +29,7 @@ const App = () => {
       <Route path='/signup' element={!user?<Signup/>:<Navigate to='/'/>}/>
       <Route path='/dashboard' element={user ? <Dashboard/> : <Navigate to='/'/>}/>
       <Route path='/create-quiz' element={user ? <CreateQuiz/> : <Navigate to='/'/>}/>
-      <Route path='/quiz/:id' element={user ? <PlayQuiz/> : <Navigate to='/'/>}/>
+      <Route path='/play-quiz/:id' element={<PlayQuiz/> }/>
      </Routes>
     {location.pathname !== '/login' && location.pathname !== '/signup' && <Footer/>}
      <Toaster
