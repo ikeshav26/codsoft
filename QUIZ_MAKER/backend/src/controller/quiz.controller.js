@@ -162,7 +162,7 @@ export const saveUserPlayerScore=async(req,res)=>{
 export const getUserPlayedQuizesScore=async(req,res)=>{
     try{
         const userId=req.user;
-        const scores=await Score.find({userId}).populate('quizId', 'title description').sort({createdAt: -1});
+        const scores=await Score.find({userId}).populate('quizId', 'title description questions').sort({createdAt: -1});
         if(!scores || scores.length === 0){
             return res.status(404).json({message: 'No scores found for this user'});
         }

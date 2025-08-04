@@ -4,8 +4,7 @@ import Navbar from './components/Navbar'
 import Home from './pages/Home'
 import Footer from './components/Footer'
 import { Toaster } from 'react-hot-toast'
-import About from './pages/About'
-import Contact from './pages/Contact' 
+import About from './pages/About' 
 import Quizes from './pages/Quizes'
 import Login from './pages/Login'
 import Signup from './pages/Signup'     
@@ -23,7 +22,6 @@ const App = () => {
      <Routes>
       <Route path='/' element={<Home/>}/>
       <Route path='/about' element={<About/>}/>
-      <Route path='/contact' element={<Contact/>}/>
       <Route path='/quizes' element={<Quizes/>}/>
       <Route path='/login' element={!user ? <Login/> : <Navigate to='/'/>}/>
       <Route path='/signup' element={!user?<Signup/>:<Navigate to='/'/>}/>

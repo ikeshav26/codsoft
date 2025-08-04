@@ -42,7 +42,7 @@ const Dashboard = () => {
     })
   }
 
-  const getScoreEmoji = (score, total = 3) => {
+  const getScoreEmoji = (score, total) => {
     const percentage = (score / total) * 100;
     if (percentage >= 90) return '🎉';
     if (percentage >= 80) return '🌟';
@@ -52,7 +52,7 @@ const Dashboard = () => {
     return '🎯';
   }
 
-  const getEncouragingMessage = (score, total = 3) => {
+  const getEncouragingMessage = (score, total) => {
     const percentage = (score / total) * 100;
     if (percentage >= 90) return 'Outstanding! You\'re crushing it! 🔥';
     if (percentage >= 80) return 'Excellent work! Keep it up! ⭐';
@@ -62,7 +62,7 @@ const Dashboard = () => {
     return 'Keep practicing! You\'ve got this! 🎯';
   }
 
-  const getScoreColor = (score, total = 3) => {
+  const getScoreColor = (score, total) => {
     const percentage = (score / total) * 100;
     if (percentage >= 80) return 'text-green-400';
     if (percentage >= 60) return 'text-yellow-400';
@@ -70,7 +70,7 @@ const Dashboard = () => {
     return 'text-red-400';
   }
 
-  const getScoreBadge = (score, total = 3) => {
+  const getScoreBadge = (score, total) => {
     const percentage = (score / total) * 100;
     if (percentage >= 80) return 'bg-green-600';
     if (percentage >= 60) return 'bg-yellow-600';
@@ -148,11 +148,16 @@ const Dashboard = () => {
                 </svg>
               </div>
               <div className="ml-4">
-                <p className="text-gray-400 text-sm">Your Progress 📊</p>
+                <p className="text-gray-400 text-sm">Avg Score % 📊</p>
                 <p className="text-2xl font-bold text-white">
                   {myPlayedQuizes.length > 0 
-                    ? Math.round((myPlayedQuizes.reduce((sum, quiz) => sum + quiz.score, 0) / myPlayedQuizes.length) * 100) / 100
-                    : 0
+                    ? Math.round(
+                        myPlayedQuizes.reduce((sum, quiz) => {
+                          const totalQuestions = quiz.quizId?.questions?.length || 1;
+                          return sum + (quiz.score / totalQuestions) * 100;
+                        }, 0) / myPlayedQuizes.length
+                      ) + '%'
+                    : '0%'
                   }
                 </p>
               </div>
@@ -170,8 +175,11 @@ const Dashboard = () => {
                 <p className="text-gray-400 text-sm">Personal Best 🏆</p>
                 <p className="text-2xl font-bold text-white">
                   {myPlayedQuizes.length > 0 
-                    ? Math.max(...myPlayedQuizes.map(quiz => quiz.score))
-                    : 0
+                    ? Math.max(...myPlayedQuizes.map(quiz => {
+                        const totalQuestions = quiz.quizId?.questions?.length || 1;
+                        return Math.round((quiz.score / totalQuestions) * 100);
+                      })) + '%'
+                    : '0%'
                   }
                 </p>
               </div>
@@ -270,40 +278,43 @@ const Dashboard = () => {
                 </div>
               ) : (
                 <div className="space-y-4">
-                  {myPlayedQuizes.map((attempt) => (
-                    <div key={attempt._id} className="bg-gray-700 rounded-lg p-4 hover:bg-gray-600 transition-all duration-200 hover:shadow-lg border-l-4 border-green-500">
-                      <div className="flex items-start justify-between">
-                        <div className="flex-1">
-                          <div className="flex items-center gap-3 mb-2">
-                            <h3 className="text-white font-medium">{attempt.quizId?.title}</h3>
-                            <span className={`px-3 py-1 rounded-full text-xs font-medium text-white ${getScoreBadge(attempt.score)} flex items-center gap-1`}>
-                              {getScoreEmoji(attempt.score)} {attempt.score}/3
-                            </span>
+                  {myPlayedQuizes.map((attempt) => {
+                    const totalQuestions = attempt.quizId?.questions?.length || 1;
+                    return (
+                      <div key={attempt._id} className="bg-gray-700 rounded-lg p-4 hover:bg-gray-600 transition-all duration-200 hover:shadow-lg border-l-4 border-green-500">
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1">
+                            <div className="flex items-center gap-3 mb-2">
+                              <h3 className="text-white font-medium">{attempt.quizId?.title}</h3>
+                              <span className={`px-3 py-1 rounded-full text-xs font-medium text-white ${getScoreBadge(attempt.score, totalQuestions)} flex items-center gap-1`}>
+                                {getScoreEmoji(attempt.score, totalQuestions)} {attempt.score}/{totalQuestions}
+                              </span>
+                            </div>
+                            <p className="text-gray-300 text-sm mb-3">{attempt.quizId?.description}</p>
+                            <div className="bg-gray-800 rounded-lg p-3 mb-3">
+                              <p className="text-xs text-gray-300 mb-1">{getEncouragingMessage(attempt.score, totalQuestions)}</p>
+                            </div>
+                            <div className="flex items-center gap-4 text-xs text-gray-400">
+                              <span className={`${getScoreColor(attempt.score, totalQuestions)} flex items-center gap-1`}>
+                                <span>📊</span> {Math.round((attempt.score / totalQuestions) * 100)}% Score
+                              </span>
+                              <span className="flex items-center gap-1">
+                                <span>⏰</span> {formatDate(attempt.createdAt)}
+                              </span>
+                            </div>
                           </div>
-                          <p className="text-gray-300 text-sm mb-3">{attempt.quizId?.description}</p>
-                          <div className="bg-gray-800 rounded-lg p-3 mb-3">
-                            <p className="text-xs text-gray-300 mb-1">{getEncouragingMessage(attempt.score)}</p>
+                          <div className="flex gap-2 ml-4">
+                            <Link
+                              to={`/play-quiz/${attempt.quizId?._id}`}
+                              className="bg-blue-600 text-white px-3 py-1 rounded text-xs font-medium hover:bg-blue-700 transition-colors duration-200 flex items-center gap-1"
+                            >
+                              <span>🔄</span> Try Again
+                            </Link>
                           </div>
-                          <div className="flex items-center gap-4 text-xs text-gray-400">
-                            <span className={`${getScoreColor(attempt.score)} flex items-center gap-1`}>
-                              <span>📊</span> {Math.round((attempt.score / 3) * 100)}% Score
-                            </span>
-                            <span className="flex items-center gap-1">
-                              <span>⏰</span> {formatDate(attempt.createdAt)}
-                            </span>
-                          </div>
-                        </div>
-                        <div className="flex gap-2 ml-4">
-                          <Link
-                            to={`/play-quiz/${attempt.quizId?._id}`}
-                            className="bg-blue-600 text-white px-3 py-1 rounded text-xs font-medium hover:bg-blue-700 transition-colors duration-200 flex items-center gap-1"
-                          >
-                            <span>🔄</span> Try Again
-                          </Link>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               )}
             </div>

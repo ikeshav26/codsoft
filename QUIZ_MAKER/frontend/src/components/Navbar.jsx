@@ -74,10 +74,6 @@ const Navbar = () => {
             </Link>
           </>
         )}
-        <Link to="/contact" className="text-gray-300 hover:text-blue-400 transition-colors duration-200 text-sm font-medium relative group">
-          Contact
-          <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-400 transition-all duration-200 group-hover:w-full"></span>
-        </Link>
       </div>
 
       {/* Desktop User Actions */}
