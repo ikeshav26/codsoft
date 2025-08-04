@@ -8,6 +8,8 @@ const Dashboard = () => {
   const { user, setUser } = useContext(AppContext)
   const [myCreatedQuizes, setmyCreatedQuizes] = useState([])
   const [myPlayedQuizes, setmyPlayedQuizes] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [deleteLoading, setDeleteLoading] = useState({})
   const navigate = useNavigate()
 
   const handleUnauthorized = () => {
@@ -20,6 +22,7 @@ const Dashboard = () => {
 
 
   const handleDeleteQuiz=async(quizId)=>{
+      setDeleteLoading(prev => ({ ...prev, [quizId]: true }))
       try{
         const res=await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/quiz/my-quiz/delete/${quizId}`, {withCredentials: true})
         if(res.status === 200) { 
@@ -35,6 +38,8 @@ const Dashboard = () => {
           return
         }
         toast.error("Failed to delete quiz")
+      } finally {
+        setDeleteLoading(prev => ({ ...prev, [quizId]: false }))
       }
     }
 
@@ -65,9 +70,13 @@ const Dashboard = () => {
       }
     }
 
+    const fetchData = async () => {
+      setIsLoading(true)
+      await Promise.all([fetchMyCreatedQuizes(), fetchMyPlayedQuizes()])
+      setIsLoading(false)
+    }
     
-    fetchMyCreatedQuizes();
-    fetchMyPlayedQuizes();
+    fetchData()
   }, [])
 
   
@@ -122,6 +131,16 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-gray-900 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Loading State */}
+        {isLoading ? (
+          <div className="flex items-center justify-center min-h-[60vh]">
+            <div className="text-center">
+              <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-500 mx-auto mb-4"></div>
+              <p className="text-gray-400 text-lg">Loading your dashboard...</p>
+            </div>
+          </div>
+        ) : (
+          <>
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center justify-between">
@@ -286,9 +305,22 @@ const Dashboard = () => {
                         <div className="flex gap-2 ml-4">
                           <button
                            onClick={() => handleDeleteQuiz(quiz._id)}
-                            className="bg-red-600 text-white px-3 py-1 rounded text-xs font-medium hover:bg-red-700 transition-colors duration-200 flex items-center gap-1"
+                           disabled={deleteLoading[quiz._id]}
+                            className="bg-red-600 text-white px-3 py-1 rounded text-xs font-medium hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200 flex items-center gap-1"
                           >
-                            <span>🗑️</span> Delete
+                            {deleteLoading[quiz._id] ? (
+                              <>
+                                <svg className="animate-spin h-3 w-3 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                                Deleting...
+                              </>
+                            ) : (
+                              <>
+                                <span>🗑️</span> Delete
+                              </>
+                            )}
                           </button>
                         </div>
                       </div>
@@ -369,6 +401,8 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
+        </>
+        )}
       </div>
     </div>
   )
